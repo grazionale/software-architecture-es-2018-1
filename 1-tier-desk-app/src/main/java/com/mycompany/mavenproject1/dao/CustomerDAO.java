@@ -13,16 +13,12 @@ import java.util.HashSet;
 
 public class CustomerDAO {
 
-    private String dbURL = "jdbc:mysql://localhost:3306/saapp";
-    private String username = "root";
-    private String password = "gabriel";
-
     public void create(Customer customer) throws Exception {
-        try (Connection conn = DriverManager.getConnection(dbURL, username, password)) {
+        try {
 
             String sql = "INSERT INTO customer (name, phone, age, country_id, creditLimit) VALUES (?, ?, ?, ?, ?)";
 
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = SingletonDAO.connect().prepareStatement(sql);
             statement.setString(1, customer.getName());
             statement.setString(2, customer.getPhone());
             statement.setInt(3, customer.getAge());
@@ -64,11 +60,11 @@ public class CustomerDAO {
 
         Set<Customer> resultSet = new HashSet<>();
 
-        try (Connection conn = DriverManager.getConnection(dbURL, username, password)) {
+        try {
 
             String sql = "SELECT * FROM customer";
 
-            Statement statement = conn.createStatement();
+            Statement statement = SingletonDAO.connect().createStatement();
             ResultSet result = statement.executeQuery(sql);
 
             Customer customer = null;
@@ -97,11 +93,11 @@ public class CustomerDAO {
     }
 
     public void update(Customer newCustomer, String name) throws Exception {
-        try (Connection conn = DriverManager.getConnection(dbURL, username, password)) {
+        try {
 
             String sql = "UPDATE customer SET name=?, age=?, country_id=?, phone=?, creditLimit=? WHERE name like ?";
 
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = SingletonDAO.connect().prepareStatement(sql);
             statement.setString(1, newCustomer.getName());
             statement.setInt(2, newCustomer.getAge());
             statement.setInt(3, newCustomer.getCountry().getId());
@@ -122,11 +118,11 @@ public class CustomerDAO {
     }
 
     public void delete(String name) {
-        try (Connection conn = DriverManager.getConnection(dbURL, username, password)) {
+        try {
 
             String sql = "DELETE FROM customer WHERE name like ?";
 
-            PreparedStatement statement = conn.prepareStatement(sql);
+            PreparedStatement statement = SingletonDAO.connect().prepareStatement(sql);
             statement.setString(1, name);
 
             int rowsDeleted = statement.executeUpdate();
