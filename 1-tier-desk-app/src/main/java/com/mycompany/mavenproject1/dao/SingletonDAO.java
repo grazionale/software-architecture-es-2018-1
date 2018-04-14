@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import javax.swing.JOptionPane;
 
 public class SingletonDAO {
-    private static String dbURL = "jdbc:mysql://localhost:3306/singletondb";
+    private static String dbURL = "jdbc:mysql://localhost:3306/saapp";
     private static String username = "root";
     private static String password = "";
     private static Connection conexao;
